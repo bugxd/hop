@@ -22,6 +22,7 @@ window.onload = function() {
   var gfx;
 
   var bird;
+  var bird2;
   var cursors;
   var enemies;
   var enemiesRect = [];
@@ -62,7 +63,7 @@ window.onload = function() {
     this.add.image(500, 300, 'background');
 
     // init graphics
-    gfx = this.add.graphics({ lineStyle: { width: 2, color: 0x0000aa }, fillStyle: { color: 0xaa0000 }});
+    gfx = this.add.graphics({ lineStyle: { width: 2, color: 0x0000ff }, fillStyle: { color: 0xaa0000 }});
 
     // init speed 100px/ 1sec
     speed = Phaser.Math.GetSpeed(100, 1);
@@ -70,6 +71,8 @@ window.onload = function() {
     // The bird and its settings
     bird = this.physics.add.sprite(100, 300, 'bird');
     bird.setCollideWorldBounds(true);
+
+    bird2 = new Bird({scene: this, gfx: gfx, x: 100, y:300});
 
     // enemies group
     enemies = this.physics.add.group({
@@ -102,6 +105,7 @@ window.onload = function() {
     //collider
     this.physics.add.collider(bird, enemies, destroy, null, this);
     this.physics.add.collider(bird, borders, destroy, null, this);
+    this.physics.add.collider(bird2, borders, destroy, null, this);
 
     // score
     scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' })
@@ -124,6 +128,7 @@ window.onload = function() {
     //bird move
     if(cursors.space.isDown) {
       bird.setVelocityY(-100);
+      bird2.setVelocityY(-100);
     }
 
     //lines
@@ -138,6 +143,8 @@ window.onload = function() {
     bottom1 = new Phaser.Geom.Line(bird.x, bird.y, 300, 600);
     bottom2 = new Phaser.Geom.Line(bird.x, bird.y, 600, 600);
     bottom3 = new Phaser.Geom.Line(bird.x, bird.y, 1000, 600);
+
+    bird2.resetLines();
 
     gfx.clear()
 
@@ -155,6 +162,10 @@ window.onload = function() {
         enemiesRect[i].x = child.x-64;
         enemiesRect[i].y = child.y-25;
         gfx.strokeRectShape(enemiesRect[i]);
+
+
+        bird2.updateDistances(enemiesRect[i]);
+
 
         var interTop = Phaser.Geom.Intersects.GetLineToRectangle(top, enemiesRect[i]);
         if(interTop.length >0){
@@ -319,6 +330,12 @@ window.onload = function() {
           distances[8] = Phaser.Geom.Line.Length(bottom);
         }
     });
+
+    gfx.lineStyle(1, 0xFF00FF);
+    bird2.getLines().forEach(function(line){
+      gfx.strokeLineShape(line);
+    })
+    gfx.lineStyle(1, 0x00FF);
 
     drawLines();
   }

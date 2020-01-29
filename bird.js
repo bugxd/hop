@@ -1,7 +1,7 @@
 class Bird extends Phaser.Physics.Arcade.Sprite {
   constructor(config) {
     super(config.scene, config.x, config.y, "bird");
-    this.config = config;
+    this.brain = new Brain;
 
     config.scene.add.existing(this);
 
@@ -30,6 +30,12 @@ class Bird extends Phaser.Physics.Arcade.Sprite {
       Phaser.Geom.Line.Length(this.bottom1),
       Phaser.Geom.Line.Length(this.bottom)
     ];
+  }
+
+  move () {
+    if(this.brain.think(this.distances)){
+      this.setVelocityY(-100);
+    }
   }
 
   resetLines() {

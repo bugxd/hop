@@ -1,8 +1,13 @@
 window.onload = function() {
+  //global values
+  var width = 1000;
+  var height = 600;
+  var population = 10;
+
   var config = {
       type: Phaser.AUTO,
-      width: 1000,
-      height: 600,
+      width: width,
+      height: height,
       physics: {
           default: 'arcade',
           arcade: {
@@ -46,7 +51,7 @@ window.onload = function() {
 
   function create () {
     //  A simple cloudy background
-    this.add.image(500, 300, 'background');
+    this.add.image(width/2, height/2, 'background');
 
     // init graphics
     gfx = this.add.graphics({ lineStyle: { width: 2, color: 0x0000ff }, fillStyle: { color: 0xaa0000 }});
@@ -57,8 +62,8 @@ window.onload = function() {
     birds = this.physics.add.group();
 
     var i = 0;
-    for(i; i<10; i++){
-      birds.add(new Bird({scene: this, x: 100, y:300, brain: {gte: 100+i*10, lte:100+i*10}}));
+    for(i; i<population; i++){
+      birds.add(new Bird({scene: this, x: 100, y:height/2, brain: {gte: 100+i*10, lte:100+i*10}}));
     }
 
 
@@ -71,7 +76,7 @@ window.onload = function() {
       velocityY: 0,
       allowGravity: false,
       repeat: 5, // creates 6
-      setXY: { x: 1000, y:25, stepX: 150 , stepY: 60}
+      setXY: { x: width, y:25, stepX: 150 , stepY: 60}
     });
 
     //
@@ -82,8 +87,8 @@ window.onload = function() {
 
     //top and bottom border
     borders = this.physics.add.staticGroup();
-    borders.create(500, 0, 'border');
-    borders.create(500, 600, 'border');
+    borders.create(width/2, 0, 'border');
+    borders.create(width/2, height, 'border');
 
     //collider
     this.physics.add.collider(birds, enemies, destroy, null, this);
@@ -115,7 +120,7 @@ window.onload = function() {
         child.x -= speed* delta;
 
         if(child.x <= 100){
-          child.setPosition(1000, Phaser.Math.Between(0, 600));
+          child.setPosition(width, Phaser.Math.Between(0, height));
             // update the score
             score += 1;
             scoreText.setText('Score: ' + score);
@@ -133,7 +138,6 @@ window.onload = function() {
 
   function destroy(bird){
     birds.remove(bird);
-    console.log(birds.getLength());
   }
 
 }

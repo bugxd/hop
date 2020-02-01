@@ -1,6 +1,6 @@
-NodeTypeInput = "INPUT";
-NodeTypeHidden = "HIDDEN";
-NodeTypeOutput = "OUTPUT";
+const NodeTypeInput = "INPUT";
+const NodeTypeHidden = "HIDDEN";
+const NodeTypeOutput = "OUTPUT";
 
 class NodeGene {
   /**
@@ -21,5 +21,9 @@ class NodeGene {
 
   getType () {
     return this.type;
+  }
+
+  toString() {
+    return this.id + " " + this.type;
   }
 }

@@ -16,4 +16,8 @@ class ConnectionGene {
     this.enabled = config.enabled;
     this.innovation = config.innovation;
   }
+
+  toString() {
+    return this.inNode + " -> " + this.outNode + " weight: " + this.weight + " enabled: " + this.enabled + " innovation: " + this.innovation;
+  }
 }

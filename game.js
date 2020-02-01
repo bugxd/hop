@@ -38,6 +38,8 @@ window.onload = function() {
   var scoreText;
   var score = 0;
 
+  var network;
+
   var game = new Phaser.Game(config);
 
   function preload ()
@@ -50,6 +52,9 @@ window.onload = function() {
   }
 
   function create () {
+    network = new Network();
+    network.show();
+
     //  A simple cloudy background
     this.add.image(width/2, height/2, 'background');
 

@@ -1,7 +1,12 @@
 class Bird extends Phaser.Physics.Arcade.Sprite {
   constructor(config) {
     super(config.scene, config.x, config.y, "bird");
-    this.brain = new Brain;
+    // init bird brain
+    this.brain = new Brain(config.brain);
+
+    //init bird stats
+    this.alive = true;
+    this.score = 0;
 
     config.scene.add.existing(this);
 
@@ -32,10 +37,21 @@ class Bird extends Phaser.Physics.Arcade.Sprite {
     ];
   }
 
+  update () {
+    this.move()
+  }
+
   move () {
-    if(this.brain.think(this.distances)){
-      this.setVelocityY(-100);
+    if(this.alive){
+      if(this.brain.think(this.distances)){
+        this.setVelocityY(-100);
+      }
     }
+  }
+
+  die (score) {
+    this.alive = false;
+    this.score = score;
   }
 
   resetLines() {

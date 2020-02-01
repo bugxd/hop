@@ -21,7 +21,7 @@ window.onload = function() {
 
   var gfx;
 
-  var bird;
+  var birds;
   var cursors;
   var enemies;
   var enemiesRect = [];
@@ -54,8 +54,13 @@ window.onload = function() {
     // init speed 100px/ 1sec
     speed = Phaser.Math.GetSpeed(100, 1);
 
-    // The bird and its settings
-    bird = new Bird({scene: this, x: 100, y:300});
+    birds = this.physics.add.group();
+
+    var i = 0;
+    for(i; i<10; i++){
+      birds.add(new Bird({scene: this, x: 100, y:300, brain: {gte: 100+i*10, lte:100+i*10}}));
+    }
+
 
     // enemies group
     enemies = this.physics.add.group({
@@ -81,8 +86,8 @@ window.onload = function() {
     borders.create(500, 600, 'border');
 
     //collider
-    this.physics.add.collider(bird, enemies, destroy, null, this);
-    this.physics.add.collider(bird, borders, destroy, null, this);
+    this.physics.add.collider(birds, enemies, destroy, null, this);
+    this.physics.add.collider(birds, borders, destroy, null, this);
 
     // score
     scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' })
@@ -92,20 +97,16 @@ window.onload = function() {
   }
 
   function update (time, delta) {
-    if(loose){
+    if(birds.getLength() === 0){
       return;
     }
 
     speed = Phaser.Math.GetSpeed(100 + score, 1);
 
-    bird.move();
-
-    //bird move
-    if(cursors.space.isDown) {
-      bird.setVelocityY(-100);
-    }
-
-    bird.resetLines();
+    birds.children.each(function (bird) {
+      bird.move();
+      bird.resetLines();
+    });
 
     gfx.clear()
 
@@ -124,19 +125,15 @@ window.onload = function() {
         enemiesRect[i].y = child.y-25;
         gfx.strokeRectShape(enemiesRect[i]);
 
-        bird.updateDistances(enemiesRect[i]);
+        birds.children.each(function (bird) {
+          bird.updateDistances(enemiesRect[i]);
+        });
     });
-
-    gfx.lineStyle(1, 0xFF00FF);
-    bird.getLines().forEach(function(line){
-      gfx.strokeLineShape(line);
-    })
-    gfx.lineStyle(1, 0x00FF);
   }
 
-  function destroy(){
-    loose = true;
-    bird.destroy();
+  function destroy(bird){
+    birds.remove(bird);
+    console.log(birds.getLength());
   }
 
 }

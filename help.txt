@@ -1,2 +1,2 @@
 run http server (-c-1 no caching)
-http-server Desktop\phaser\hop -c-1
+http-server C:\Users\luki\Documents\GitHub\hop -c-1

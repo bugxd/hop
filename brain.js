@@ -4,30 +4,35 @@
 */
 class Brain {
 
+  constructor(config) {
+    this.gte = config.gte;
+    this.lte = config.lte;
+  }
+
   think(input) {
-    if(input[0] < 100){
+    if(input[0] < this.gte){
       return false;
     }
-    if(input[1] < 100){
+    if(input[1] < this.gte){
       return false;
     }
-    if(input[2] < 100){
+    if(input[2] < this.gte){
       return false;
     }
-    if(input[3] < 100){
+    if(input[3] < this.gte){
       return false;
     }
 
-    if(input[8] < 150){
+    if(input[8] < this.lte){
       return true;
     }
-    if(input[7] < 150){
+    if(input[7] < this.lte){
       return true;
     }
-    if(input[6] < 150){
+    if(input[6] < this.lte){
       return true;
     }
-    if(input[5] < 150){
+    if(input[5] < this.lte){
       return true;
     }
 

@@ -13,6 +13,7 @@ class NodeGene {
   constructor(config) {
     this.id = config.id;
     this.type = config.type;
+    this.innovation = innovation.getNext();
   }
 
   getId () {
@@ -23,7 +24,11 @@ class NodeGene {
     return this.type;
   }
 
+  getInnovation() {
+    return this.innovation;
+  }
+
   toString() {
-    return this.id + " " + this.type;
+    return this.id + " " + this.type + " " + this.innovation;
   }
 }

@@ -1,16 +1,8 @@
 class Genome {
-  /**
-   * "config": {
-   *  "input": number
-   *  "output": number,
-   *
-   * }
-   */
-  constructor(config) {
-    this.nextNode = 1;
+  constructor() {
+    this.nextNode = 0;
     this.nodes = [];
     this.connections = [];
-
   }
 
   getNodes() {
@@ -21,8 +13,26 @@ class Genome {
     return this.connections;
   }
 
-  mutateAddConnection() {
+  mutateAddNode() {
     var done = false;
+    while(!done){
+      var connection = this.connections[this.randomConnection()];
+
+      if(connection.getEnabled()) {
+        connection.disable();
+        var newNode = this.addNode(NodeTypeHidden);
+
+        console.log(newNode);
+
+        this.addConnection(connection.getInNode(), newNode, 1, true);
+        this.addConnection(newNode, connection.getOutNode(), connection.getWeight, true);
+        done = true;
+      }
+    }
+  }
+
+  mutateAddConnection() {
+      var done = false;
     while(!done) {
       var node1 = this.nodes[this.randomNode()];
       var node2 =  this.nodes[this.randomNode()];
@@ -40,13 +50,12 @@ class Genome {
           reverse = true;
       }
 
-
-      var sameType = false;
+      var diff = true;
       if(node1.getType() === NodeTypeInput && node2.getType() === NodeTypeInput){
-        sameType = true;
+        diff = false;
       }
       if(node1.getType() === NodeTypeInput && node2.getType() === NodeTypeInput){
-        sameType = true;
+        diff = false;
       }
 
       var connected = true;
@@ -58,23 +67,33 @@ class Genome {
         }
       }
 
-      if(!connected && !sameType) {
+      if(!connected && diff) {
         var weight = (Math.random() * 4) - 2;
         if(reverse) {
-          this.addConnection(node2, node1, weight, true, 0);
+          this.addConnection(node2, node1, weight, true);
         } else {
-          this.addConnection(node1, node2, weight, true, 0);
+          this.addConnection(node1, node2, weight, true);
         }
         done = true;
       }
+
+      console.log(node1.getId() + " " + node2.getId() + " " + done);
     }
   }
 
-  //return number between nextNode and 1
-  randomNode() {
-    return this.getRandomInt(this.nextNode -1 ,1);
+  randomConnection() {
+    return this.getRandomInt(0, this.connections.length-1);
   }
 
+  randomNode() {
+    return this.getRandomInt(1, this.nextNode -1);
+  }
+
+  /**
+  * min number
+  * max number
+  * returns number between min and max
+  */
   getRandomInt(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
@@ -89,20 +108,20 @@ class Genome {
   hasConnection(node1, node2) {
     var i = 0;
     for(i; i<this.connections.length; i++) {
-      if(this.connections[i].inNode && this.connection[i].outNode){
+      if(this.connections[i].inNode === node1 && this.connections[i].outNode === node2){
         return true;
       }
     }
-
     return false;
   }
 
   addNode(type) {
-    this.nodes.push(new NodeGene({ id:this.nextNode, type: type }))
     this.nextNode = this.nextNode +1;
+    this.nodes.push(new NodeGene({ id:this.nextNode, type: type }))
+    return this.nextNode;
   }
 
-  addConnection(inNode, outNode, weight, enabled, innovation) {
-    this.nodes.push(new ConnectionGene({ inNode:inNode, outNode: outNode, weight: weight, enabled: enabled, innovation: innovation }))
+  addConnection(inNode, outNode, weight, enabled) {
+    this.connections.push(new ConnectionGene({ inNode:inNode, outNode: outNode, weight: weight, enabled: enabled }))
   }
 }

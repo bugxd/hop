@@ -18,12 +18,14 @@ class Network {
 
     this.parent1.addNode(NodeTypeOutput);
 
-    this.parent1.addConnection(1, 2, 2, true, 1);
-    this.parent1.addConnection(2, 3, 2, true, 2);
-    this.parent1.addConnection(3, 4, 2, true, 3);
-    this.parent1.addConnection(1, 4, 2, true, 4);
+    this.parent1.addConnection(1, 2, 2, true);
+    this.parent1.addConnection(2, 3, 2, true);
+    this.parent1.addConnection(3, 4, 2, true);
+    this.parent1.addConnection(1, 4, 2, true);
 
-    this.parent1.mutateAddConnection();
+    this.show();
+
+    this.parent1.mutateAddNode();
 
     this.show();
   }

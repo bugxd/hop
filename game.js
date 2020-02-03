@@ -53,7 +53,6 @@ window.onload = function() {
 
   function create () {
     network = new Network();
-    network.show();
 
     //  A simple cloudy background
     this.add.image(width/2, height/2, 'background');

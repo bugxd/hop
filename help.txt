@@ -1,2 +1,6 @@
 run http server (-c-1 no caching)
 http-server C:\Users\luki\Documents\GitHub\hop -c-1
+
+
+links:
+https://www.youtube.com/watch?v=1I1eG-WLLrY

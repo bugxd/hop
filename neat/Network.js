@@ -7,7 +7,7 @@ class Network {
    * }
    */
   constructor() {
-    this.parent1 = new Genome();
+    this.parent1 = new Genome(0, [], []);
     this.parent1.addNode(NodeTypeInput);
     this.parent1.addNode(NodeTypeInput);
     this.parent1.addNode(NodeTypeInput);
@@ -18,14 +18,14 @@ class Network {
 
     this.parent1.addNode(NodeTypeOutput);
 
-    this.parent1.addConnection(1, 2, 2, true);
-    this.parent1.addConnection(2, 3, 2, true);
-    this.parent1.addConnection(3, 4, 2, true);
-    this.parent1.addConnection(1, 4, 2, true);
+    this.parent2 = this.parent1.copy();
 
-    this.show();
-
+    this.parent1.mutateAddConnection();
     this.parent1.mutateAddNode();
+
+    this.parent2.mutateAddConnection();
+    this.parent2.mutateAddNode();
+
 
     this.show();
   }
@@ -48,6 +48,26 @@ class Network {
     for(j; j<connections.length; j++) {
       const para = document.createElement('p');
       para.textContent = connections[j].toString();
+      div.appendChild(para);
+    }
+
+    const para = document.createElement('p');
+    para.textContent = para.textContent + "-----------------------------------------------------------";
+    div.appendChild(para);
+
+    const nodes2 = this.parent2.getNodes();
+    var i = 0;
+    for(i; i<nodes2.length; i++) {;
+      const para = document.createElement('p');
+      para.textContent = para.textContent + nodes2[i].toString();
+      div.appendChild(para);
+    }
+
+    const connections2 = this.parent2.getConnections();
+    var j = 0;
+    for(j; j<connections2.length; j++) {
+      const para = document.createElement('p');
+      para.textContent = connections2[j].toString();
       div.appendChild(para);
     }
   }

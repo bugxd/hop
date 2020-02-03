@@ -1,8 +1,13 @@
 class Genome {
-  constructor() {
-    this.nextNode = 0;
-    this.nodes = [];
-    this.connections = [];
+  /**
+   *  nextNode: number,
+   *  nodes: Array<NodeGene>,
+   *  connections: Array<ConnectionGene>,
+   */
+  constructor(nextNode, nodes, connections) {
+    this.nextNode = nextNode;
+    this.nodes = nodes;
+    this.connections = connections;
   }
 
   getNodes() {
@@ -15,14 +20,17 @@ class Genome {
 
   mutateAddNode() {
     var done = false;
+
+    if(this.connections.length === 0){
+      done = true;
+    }
+
     while(!done){
       var connection = this.connections[this.randomConnection()];
 
       if(connection.getEnabled()) {
         connection.disable();
         var newNode = this.addNode(NodeTypeHidden);
-
-        console.log(newNode);
 
         this.addConnection(connection.getInNode(), newNode, 1, true);
         this.addConnection(newNode, connection.getOutNode(), connection.getWeight, true);
@@ -76,8 +84,6 @@ class Genome {
         }
         done = true;
       }
-
-      console.log(node1.getId() + " " + node2.getId() + " " + done);
     }
   }
 
@@ -123,5 +129,9 @@ class Genome {
 
   addConnection(inNode, outNode, weight, enabled) {
     this.connections.push(new ConnectionGene({ inNode:inNode, outNode: outNode, weight: weight, enabled: enabled }))
+  }
+
+  copy() {
+    return new Genome(this.nextNode, [...this.nodes], [...this.connections]);
   }
 }

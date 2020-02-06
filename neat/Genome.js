@@ -121,6 +121,35 @@ class Genome {
     return false;
   }
 
+  /**
+  * innovation: number
+  */
+  containsNode(innovation) {
+    var i = 0;
+    var contains = false;
+    for(i; i < this.nodes.length; i++) {
+      contains = contains || (this.nodes[i].innovation === innovation);
+    }
+
+    return contains;
+  }
+
+  /**
+  * innovation: number
+  */
+  containsConnection(innovation) {
+    var i = 0;
+    var contains = false;
+    for(i; i < this.connections.length; i++) {
+      contains = contains || (this.connections[i].innovation === innovation);
+    }
+
+    return contains;
+  }
+
+  /**
+  * type: NodeType<Input | Hidden | Output>
+  */
   addNode(type) {
     this.nextNode = this.nextNode +1;
     this.nodes.push(new NodeGene({ id:this.nextNode, type: type }))

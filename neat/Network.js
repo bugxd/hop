@@ -31,11 +31,63 @@ class Network {
     this.parent2.addConnection(3, 5, 8, true);
     this.parent2.addConnection(1, 6, 9, true);
 
-    this.child = this.crossOver(this.parent2, this.parent1);
-    console.log(this.child);
+    //this.child = this.crossOver(this.parent2, this.parent1);
+
+    console.log(this.compatibility(this.parent1, this.parent2));
 
     this.show();
   }
+
+  /**
+  * parent1: Genome
+  * parent2: Genome
+  */
+  compatibility(parent1, parent2) {
+    const pIA1 = parent1.getInnovationsArray();
+    const pIA2 = parent2.getInnovationsArray();
+
+    const p1Last = pIA1[pIA1.length -1];
+    const p2Last = pIA2[pIA2.length -1];
+
+    var matching = 0;
+    var disjoint = 0;
+    var excess = 0;
+
+    // count and delete exess genes
+    if(p1Last > p2Last) {
+      var i = -1;
+      var done = false;
+      const length = pIA1.length;
+      while(!done){
+        i++;
+        if(pIA1[i] > p2Last){
+          done = true;
+        }
+      }
+      console.log(i);
+      pIA1.splice(i);
+
+      excess = length - pIA1.length;
+    }
+
+    if(p1Last < p2Last) {
+      var i = -1;
+      var done = false;
+      const length = pIA2.length;
+      while(!done){
+        i++;
+        if(pIA2[i] > p1Last){
+          done = true;
+        }
+      }
+      pIA2.splice(i);
+
+      excess = length - pIA2.length;
+    }
+
+    return excess;
+  }
+
 
   /**
   * parent1: Genome

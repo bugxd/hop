@@ -18,6 +18,38 @@ class Genome {
     return this.connections;
   }
 
+  getInnovationsArray() {
+    var innovations = [];
+
+    var i = 0;
+    for(i; i<this.nodes.length; i++) {
+      const current = this.nodes[i].getInnovation();
+      var j = 0;
+      var index = 0;
+      for(j; j<innovations.length; j++){
+        if(innovations[j] < current){
+          index = j;
+        }
+      }
+      innovations.splice(index +1, 0, current);
+    }
+
+    i = 0;
+    for(i; i<this.connections.length; i++) {
+      const current = this.connections[i].getInnovation();
+      var j = 0;
+      var index = 0;
+      for(j; j<innovations.length; j++){
+        if(innovations[j] < current){
+          index = j;
+        }
+      }
+      innovations.splice(index +1, 0, current);
+    }
+
+    return innovations;
+  }
+
   mutateAddNode() {
     var done = false;
 

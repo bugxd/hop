@@ -180,6 +180,20 @@ class Genome {
   }
 
   /**
+  * innovation: number
+  */
+  getConnectionByInnovation(innovation) {
+    var i = 0;
+    for(i; i < this.connections.length; i++) {
+      if(this.connections[i].getInnovation() === innovation) {
+          return this.connections[i];
+      }
+    }
+
+    return null;
+  }
+
+  /**
   * type: NodeType<Input | Hidden | Output>
   */
   addNode(type) {

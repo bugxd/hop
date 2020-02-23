@@ -31,7 +31,7 @@ class Network {
     this.parent2.addConnection(3, 5, 8, true);
     this.parent2.addConnection(1, 6, 9, true);
 
-    //this.child = this.crossOver(this.parent2, this.parent1);
+    this.child = this.crossOver(this.parent2, this.parent1);
 
     console.log(this.compatibility(this.parent1, this.parent2));
 
@@ -49,6 +49,9 @@ class Network {
     const p1Last = pIA1[pIA1.length -1];
     const p2Last = pIA2[pIA2.length -1];
 
+    // matching Weight Sum
+    var p1MWS = 0;
+    var p2MWS = 0;
     var matching = 0;
     var disjoint = 0;
     var excess = 0;
@@ -85,7 +88,27 @@ class Network {
       excess = length - pIA2.length;
     }
 
-    return excess;
+    var i = 0;
+    for(i; i< pIA1.length; i++) {
+      if(!!pIA2.find(n => n === pIA1[i])){
+        matching += 1;
+        const con1 = parent1.getConnectionByInnovation(pIA1[i]);
+        const con2 = parent2.getConnectionByInnovation(pIA1[i]);
+        if(con1 !== null) {
+            p1MWS += con1.getWeight();
+        }
+
+        if(con2 !== null) {
+            p2MWS += con2.getWeight();
+        }
+      } else {
+        disjoint += 1;
+      }
+    }
+
+    disjoint += pIA2.length - matching;
+
+    return disjoint + excess + ((p1MWS/matching)-(p2MWS/matching));
   }
 
 
